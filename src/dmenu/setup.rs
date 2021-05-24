@@ -4,7 +4,7 @@ use x11::xlib::{Window, XGetInputFocus, PointerRoot, XFree, XQueryTree, XQueryPo
 		CWOverrideRedirect, XCreateWindow, VisibilityChangeMask, KeyPressMask,
 		ExposureMask, XSetWindowAttributes, XOpenIM,
 		XIMStatusNothing, XIMPreeditNothing, XCreateIC, XMapRaised,
-		FocusChangeMask, XSelectInput, SubstructureNotifyMask};
+		FocusChangeMask, XSelectInput, SubstructureNotifyMask, XSetWindowBorder};
 use std::ptr;
 use std::mem::MaybeUninit;
 use libc::{c_char, c_int, c_uint, c_void};
@@ -113,11 +113,12 @@ impl Drw {
 	    swa.event_mask = ExposureMask | KeyPressMask | VisibilityChangeMask;
 	    self.pseudo_globals.win =
 		XCreateWindow(self.dpy, parentwin, x, y, self.w as u32,
-			      self.h as u32, 0, 0,
+			      self.h as u32, self.config.border_width as u32, 0,
 			      0, ptr::null_mut(),
 			      CWOverrideRedirect | CWBackPixel | CWEventMask, &mut swa);
-	    XSetClassHint(self.dpy, self.pseudo_globals.win, &mut ch);
-
+	    XSetWindowBorder(self.dpy, self.pseudo_globals.win, (*self.pseudo_globals.schemeset[SchemeSel as usize][ColBg as usize]).pixel);
+        XSetClassHint(self.dpy, self.pseudo_globals.win, &mut ch);
+        
 	    /* input methods */
 	    let xim = XOpenIM(self.dpy, ptr::null_mut(), ptr::null_mut(), ptr::null_mut());
 	    if xim == ptr::null_mut() {

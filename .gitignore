@@ -19,4 +19,4 @@ massif*
 dmenu-*
 
 # m4 stuff
-src/build/Cargo.toml
+src/build/Cargo.tomldestdir/

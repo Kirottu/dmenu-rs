@@ -280,7 +280,7 @@ impl Drw {
 	unsafe {
 	    XSetForeground(self.dpy, self.gc, (*self.scheme[if invert {ColBg} else {ColFg} as usize]).pixel);
 	    if filled {
-		XFillRectangle(self.dpy, self.drawable, self.gc, x, y, w, h);
+		XFillRectangle(self.dpy, self.drawable, self.gc, x, y, w - self.config.border_width as u32 * 2, h);
 	    } else {
 		XDrawRectangle(self.dpy, self.drawable, self.gc, x, y, w - 1, h - 1);
 	    }

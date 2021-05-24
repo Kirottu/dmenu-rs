@@ -27,6 +27,11 @@ args:
       long:  lines
       takes_value: true
       value_name:  LINES
+  - border_width:
+      help: Window border thickness
+      long: bw
+      takes_value: true
+      value_name: THICKNESS
   - monitor:
       help:  X monitor to display on
       short: m
