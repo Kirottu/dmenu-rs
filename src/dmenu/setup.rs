@@ -107,12 +107,12 @@ impl Drw {
 		self.w = self.wa.width;
 	    }
 
-	    let mut swa: XSetWindowAttributes = MaybeUninit::uninit().assume_init();
+        let mut swa: XSetWindowAttributes = MaybeUninit::uninit().assume_init();
 	    swa.override_redirect = true as i32;
 	    swa.background_pixel = (*self.pseudo_globals.schemeset[SchemeNorm as usize][ColBg as usize]).pixel;
 	    swa.event_mask = ExposureMask | KeyPressMask | VisibilityChangeMask;
 	    self.pseudo_globals.win =
-		XCreateWindow(self.dpy, parentwin, x, y, self.w as u32,
+		XCreateWindow(self.dpy, parentwin, x, y, self.w as u32 - self.config.border_width * 2,
 			      self.h as u32, self.config.border_width as u32, 0,
 			      0, ptr::null_mut(),
 			      CWOverrideRedirect | CWBackPixel | CWEventMask, &mut swa);

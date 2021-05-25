@@ -1,5 +1,5 @@
 use overrider::*;
-use rink_core::{one_line, simple_context, Context};
+use rink_core::{gnu_units, date, one_line, Context, DATES_FILE, DEFAULT_FILE, CURRENCY_FILE};
 use std::io::Write;
 use std::process::{Command, Stdio};
 use std::sync::Mutex;
@@ -11,8 +11,26 @@ use crate::drw::Drw;
 use crate::item::Item;
 use crate::result::*;
 
+fn create_context() -> Result<Context, String> {
+    let mut ctx = Context::new();
+    
+    let mut iter_units = gnu_units::TokenIterator::new(&DEFAULT_FILE.unwrap()).peekable();
+    let mut iter_currencies = gnu_units::TokenIterator::new(&CURRENCY_FILE).peekable(); 
+    
+    let units = gnu_units::parse(&mut iter_units);
+    let currencies = gnu_units::parse(&mut iter_currencies);
+    let dates = date::parse_datefile(DATES_FILE);
+
+    ctx.load(currencies);
+    ctx.load(units);
+    ctx.load_dates(dates);
+
+    Ok(ctx)
+}
+
 lazy_static::lazy_static! {
-    static ref CTX: Mutex<Context> = Mutex::new(simple_context().unwrap());
+
+    static ref CTX: Mutex<Context> = Mutex::new(create_context().unwrap());
 }
 
 async fn timed_eval(expr: String) -> Result<String, String> {

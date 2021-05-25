@@ -18,7 +18,7 @@ pub enum DefaultWidth {
 #[derive(Debug)]
 pub struct Config {
     pub lines: c_uint,
-    pub border_width: c_int,
+    pub border_width: c_uint,
     pub topbar: bool,
     pub prompt: String,
     pub promptw: c_int,
@@ -43,7 +43,7 @@ impl Default for Config {
 	unsafe {
 	    Self{
 		lines:                ConfigDefault::lines(),
-		border_width:         ConfigDefault::border_width(),
+		border_width:         1,
         topbar:               ConfigDefault::topbar(),
 		prompt:               ConfigDefault::prompt(),
 		promptw:              MaybeUninit::uninit().assume_init(),

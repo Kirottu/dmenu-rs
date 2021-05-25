@@ -70,8 +70,15 @@ pub fn validate(config: &mut Config) -> CompResult<()> {
     // lines
     if let Some(lines) = CLAP_FLAGS.value_of("lines") {
 	config.lines = lines.parse::<u32>()
-	    .map_err(|_| Die::Stderr("-l: Lines must be a non-negaitve integer"
+	    .map_err(|_| Die::Stderr("-l: Lines must be a non-negative integer"
 				     .to_owned()))?;
+    }
+    
+    if let Some(border_width) = CLAP_FLAGS.value_of("border_width") {
+    config.border_width = border_width.parse::<u32>()
+        .map_err(|_| Die::Stderr("--bw: Border width must be a non-negative integer"
+                     .to_owned()))?;
+
     }
 
     // monitor
