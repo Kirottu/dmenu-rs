@@ -32,6 +32,12 @@ args:
       long: bw
       takes_value: true
       value_name: THICKNESS
+  - return_int:
+      help: Return selection as index
+      long: int
+  - password:
+      help: Do not render typed characters
+      long: pass
   - monitor:
       help:  X monitor to display on
       short: m
